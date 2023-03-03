@@ -1,0 +1,2 @@
+INSERT INTO Usuario (dni, nombre, apellido, email, fechaNacimiento, contrasena, nacionalidad, tipoUsuario) VALUES(1, 'Andres', 'Guzman', '2017-08-21', 'contrasena', 'argentino', 'admin');
+INSERT INTO Usuario (dni, nombre, apellido, email, fechaNacimiento, contrasena, nacionalidad, tipoUsuario) VALUES(2, 'Maria', 'Nemo', '2018-10-23', 'contrasena', 'argentino', 'admin');
