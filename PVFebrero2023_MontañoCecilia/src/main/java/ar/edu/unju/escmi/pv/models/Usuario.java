@@ -1,19 +1,29 @@
 package ar.edu.unju.escmi.pv.models;
 
-import java.time.LocalDate;
+import java.io.Serializable;
+import java.util.Date;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 import javax.validation.constraints.NotEmpty;
 import javax.validation.constraints.NotNull;
+import javax.validation.constraints.Past;
 
-import org.springframework.lang.NonNull;
+import org.springframework.format.annotation.DateTimeFormat;
+
 
 @Entity
-public class Usuario {
+public class Usuario implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Id
-	@NonNull
+	@NotNull
 	private Long dni;
 
 	@NotEmpty
@@ -22,7 +32,10 @@ public class Usuario {
 	private String apellido;
 
 	@NotNull
-	private LocalDate fechaNacimiento;
+	@Temporal(TemporalType.DATE)
+	@DateTimeFormat(pattern="yyyy-MM-dd")
+	@Past
+	private Date fechaNacimiento;
 
 	@NotEmpty
 	private String contrasena;
@@ -30,8 +43,9 @@ public class Usuario {
 	@NotEmpty
 	private String nacionalidad;
 
-	@NotEmpty
-	private String tipoUsuario;
+	/*@NotEmpty
+	private List<String> tipoUsuario;*/
+
 
 	public Long getDni() {
 		return dni;
@@ -57,11 +71,11 @@ public class Usuario {
 		this.apellido = apellido;
 	}
 
-	public LocalDate getFechaNacimiento() {
+	public Date getFechaNacimiento() {
 		return fechaNacimiento;
 	}
 
-	public void setFechaNacimiento(LocalDate fechaNacimiento) {
+	public void setFechaNacimiento(Date fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
 	}
 
@@ -81,13 +95,19 @@ public class Usuario {
 		this.nacionalidad = nacionalidad;
 	}
 
-	public String getTipoUsuario() {
+	/*public List<String> getTipoUsuario() {
 		return tipoUsuario;
 	}
 
-	public void setTipoUsuario(String tipoUsuario) {
+	public void setTipoUsuario(List<String> tipoUsuario) {
 		this.tipoUsuario = tipoUsuario;
+	}*/
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
 	}
+
+	
 
 	
 }
