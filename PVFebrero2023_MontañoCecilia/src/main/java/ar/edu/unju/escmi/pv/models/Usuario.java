@@ -43,8 +43,8 @@ public class Usuario implements Serializable{
 	@NotEmpty
 	private String nacionalidad;
 
-	/*@NotEmpty
-	private List<String> tipoUsuario;*/
+	@NotEmpty
+	private String tipoUsuario;
 
 
 	public Long getDni() {
@@ -95,17 +95,19 @@ public class Usuario implements Serializable{
 		this.nacionalidad = nacionalidad;
 	}
 
-	/*public List<String> getTipoUsuario() {
+	public String getTipoUsuario() {
 		return tipoUsuario;
 	}
 
-	public void setTipoUsuario(List<String> tipoUsuario) {
+	public void setTipoUsuario(String tipoUsuario) {
 		this.tipoUsuario = tipoUsuario;
-	}*/
+	}
 
 	public static long getSerialversionuid() {
 		return serialVersionUID;
 	}
+
+
 
 	
 

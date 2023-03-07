@@ -65,16 +65,18 @@ public class UsuarioController {
 	
 	@GetMapping("/eliminar/{dni}")
 	public String remove(@PathVariable(value = "dni") Long dni) {
-		
+		if(dni > 0) {
 		usuarioRepository.remove(dni);
+		}
+		
 	return "redirect:/listar";
 	}
 	
-	/*@ModelAttribute("listaTipoUsuario")
+	@ModelAttribute("listaTipoUsuario")
 	public List<String> listaTipoUsuario(){
 		List<String> tipoUsuarios = new ArrayList<>();
-		tipoUsuarios.add("ADMINISTRADOR");
-		tipoUsuarios.add("HUESPED");
+		tipoUsuarios.add("Administrador");
+		tipoUsuarios.add("Huesped");
 		return tipoUsuarios;
-	}*/
+	}
 }
