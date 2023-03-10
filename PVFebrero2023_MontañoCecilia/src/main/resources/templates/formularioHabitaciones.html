@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head th:replace="layout/layout :: head"></head>
+<body>
+		<header th:replace="layout/layout :: header"></header>
+	
+<div class="container py-4">
+<div class="card bg-light">
+<div class="card-header" th:text="${titulo}"></div>
+<div class="card-body">
+			
+				<form th:action="@{/formularioHabitaciones}" th:object="${habitacion}" method="post">
+					
+					<div class="form-group row">
+						<label class="col-sm-2 col-form-label">Codigo</label>
+						<div class="col-sm-6"><input type="number" th:field="*{codigo}" class="form-control"/> 
+						<small class="form-text text-danger" th:if="${#fields.hasErrors('codigo')}" th:errors="*{codigo}"></small>
+						
+						</div>
+					</div>
+					<div class="form-group row">
+						<label class="col-sm-2 col-form-label">Caracteristicas</label>
+						<div class="col-sm-6">
+							<input type="text" th:field="*{caracteristicas}" class="form-control"/>
+							<small class="form-text text-danger" th:if="${#fields.hasErrors('caracteristicas')}" th:errors="*{caracteristicas}"></small>
+						</div>
+						</div>
+			 <div class="form-group row">
+			<label class="col-form-label col-sm-2">Tipo</label>
+			<div class="col-sm-6">
+			<div th:each="tipoH: ${listaTipo}">
+			
+			<input type="radio" th:field="*{tipo}" th:value="${tipoH}">
+			<label th:for="${#ids.prev('tipo')}" th:text="${tipoH}" class="col-form-label"></label>
+			<small class="form-text text-danger" th:if="${#fields.hasErrors('tipo')}" th:errors="*{tipo}"></small>
+			</div>
+			</div>
+			</div>
+			
+			<div class="form-group row">
+			<label class="col-form-label col-sm-2">Camas</label>
+			<div class="col-sm-6">
+			<div th:each="camaH: ${listaCamas}">
+			
+			<input type="radio" th:field="*{camas}" th:value="${camaH}">
+			<label th:for="${#ids.prev('camas')}" th:text="${camaH}" class="col-form-label"></label>
+			<small class="form-text text-danger" th:if="${#fields.hasErrors('camas')}" th:errors="*{camas}"></small>
+			</div>
+			</div>
+			</div>
+			
+			<div class="form-group row">
+			<label class="col-form-label col-sm-2">Estado</label>
+			<div class="col-sm-6">
+			<div th:each="estadoH: ${listaEstado}">
+			
+			<input type="radio" th:field="*{estado}" th:value="${estadoH}">
+			<label th:for="${#ids.prev('estado')}" th:text="${estadoH}" class="col-form-label"></label>
+			<small class="form-text text-danger" th:if="${#fields.hasErrors('estado')}" th:errors="*{estado}"></small>
+			</div>
+			</div>
+			</div>
+						<div class="form-group row">
+							<div class="col-sm-6"><input type="submit" value="Crear Habitacion"
+								class="btn btn-primary" /></div>
+				</div>
+				</form>
+				</div>
+				</div>
+				</div>
+		<footer th:replace="layout/layout :: footer"></footer>
+	
+
+</body>
+</html>

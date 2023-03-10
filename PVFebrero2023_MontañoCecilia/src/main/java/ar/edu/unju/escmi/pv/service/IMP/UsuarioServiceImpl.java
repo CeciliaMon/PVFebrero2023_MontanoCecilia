@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 
 import ar.edu.unju.escmi.pv.dao.IUsuarioDao;
@@ -28,6 +29,9 @@ public class UsuarioServiceImpl implements IUsuarioService{
 	@Override
 	public void guardar(Usuario usuario) {
 		// TODO Auto-generated method stub
+		String contr = usuario.getContrasena();
+		BCryptPasswordEncoder coder = new BCryptPasswordEncoder(4);
+		usuario.setContrasena(coder.encode(contr));
 		usuarioRepository.save(usuario);
 	}
 

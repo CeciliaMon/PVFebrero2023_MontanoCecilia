@@ -14,23 +14,19 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 
 import ar.edu.unju.escmi.pv.service.IMP.LoginUsuarioServiceImpl;
 @Configuration
-
+//@EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
-	
-	/*@Autowired
-	private LoginSuccesHandler successHandler;*/
 	
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
-
-		http.authorizeRequests().antMatchers("/","/img/**", "/css/**", "/js/**", "/formulario/**").permitAll()
+		http
+		.authorizeRequests().antMatchers("/","/images/**", "/css/**", "/js/**", "/formulario/**", "/formularioHabitaciones/**", "/listarHabitaciones/**").permitAll()
 		.antMatchers("/formulario/**").hasAnyAuthority("Administrador")
 		.antMatchers("/listar/**").hasAnyAuthority("Administrador")
 		.anyRequest().authenticated()
 		.and()
 		.formLogin()
-			//.successHandler(successHandler)
 			.loginPage("/login")
 			.usernameParameter("dni")
 			.passwordParameter("password")
@@ -39,24 +35,30 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		.logout()
 		.permitAll()
 		.and()
-		.exceptionHandling().accessDeniedPage("/error_403");
+		.exceptionHandling().accessDeniedPage("/error_350");
+		//.logoutSuccessUrl("/login?logout");
 	}
 	
 	BCryptPasswordEncoder bCryptPasswordEncoder;
-	
 	@Bean
 	public BCryptPasswordEncoder passwordEncoder() {
 		
-		return new BCryptPasswordEncoder(4);
+		bCryptPasswordEncoder = new BCryptPasswordEncoder(4);
+		
+		return bCryptPasswordEncoder;
 	}
 	
 	@Autowired
 	LoginUsuarioServiceImpl userDetailsService;
 	
 	@Autowired
-	public void configurerGlobal(AuthenticationManagerBuilder builder) throws Exception{
+	public void configurerGlobal(AuthenticationManagerBuilder auth) throws Exception{
 		
-		builder.userDetailsService(userDetailsService);
+		auth.userDetailsService(userDetailsService);
+		/*PasswordEncoder encoder = passwordEncoder();
+		UserBuilder users = User.builder().passwordEncoder(encoder::encode);
+		
+		auth.inMemoryAuthentication().withUser(users.username("34").password("234").roles("Administrador"));*/
 	}
 		
 	

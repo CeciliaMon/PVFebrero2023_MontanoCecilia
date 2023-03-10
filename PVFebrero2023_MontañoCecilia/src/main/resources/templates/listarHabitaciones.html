@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head">
+</head>
+<body>
+	<header th:replace="layout/layout :: header"></header>
+<div class="container py-4">
+<div class="card bg-light">
+<div class="card-header" th:text="${titulo}"></div>
+<div class="card-body">
+
+	<table class="table table-striped">
+		<thead class="thead-inverse">
+			<tr>
+				<th>Codigo</th>
+				<th>Caracteristicas</th>
+				<th>Tipo</th>
+				<th>Camas</th>
+				<th>Estado</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="habitacion: ${habitaciones}">
+				<td th:text="${habitacion.codigo}"></td>
+				<td th:text="${habitacion.caracteristicas}"></td>
+				<td th:each="tipoH: ${habitacion.tipo}" th:text="${tipoH}"></td>
+				<td th:each="camaH: ${habitacion.camas}" th:text="${camaH}"></td>
+				<td th:each="estadoH: ${habitacion.estado}" th:text="${estadoH}"></td>
+				
+				<td><a class="btn btn-primary btn-xs" th:href="@{/formularioHabitaciones/} + ${habitacion.codigo}">Editar</a>
+				<td><a class="btn btn-danger btn-xs" th:href="@{/eliminar/} + ${habitacion.codigo}" onclick="return confirm('¿Estas seguro de eliminar esta habitacion?');">Eliminar</a>
+			
+			</tr>
+
+		</tbody>
+	</table>
+	</div>
+	</div>
+	<h4 class="card-tittle">
+	<a class="btn btn-success btn-xs" th:href="@{/formularioHabitaciones}">Crear Habitacion</a>
+	</h4>
+	</div>
+		<footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>
