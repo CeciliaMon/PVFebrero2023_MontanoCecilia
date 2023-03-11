@@ -1,7 +1,8 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
 <head th:fragment="head">
-<meta charset="UTF-8"/>
+<meta charset="UTF-8" />
 <title th:text="'Pagina de Hotel - ' + ${titulo}"></title>
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
@@ -9,9 +10,9 @@
 	crossorigin="anonymous">
 </head>
 <body>
-	<header  th:fragment="header">
+	<header th:fragment="header">
 		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-			<a class="navbar-brand" href="#">Hotel</a>
+			<a class="navbar-brand" th:href="@{/home}">Hotel</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse"
 				data-target="#navbarSupportedContent"
 				aria-controls="navbarSupportedContent" aria-expanded="false"
@@ -21,10 +22,11 @@
 
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav mr-auto">
-					<li class="nav-item active"><a class="nav-link" href="#">Registrar
+					<li class="nav-item active"><a class="nav-link" th:href="@{/formulario}">Registrar
 							huesped <span class="sr-only">(current)</span>
 					</a></li>
-					<li class="nav-item"><a class="nav-link" th:href="@{/listar}">Listado Usuarios</a></li>
+					<li class="nav-item"><a class="nav-link" th:href="@{/listar}">Listado
+							Usuarios</a></li>
 					<li class="nav-item dropdown"><a
 						class="nav-link dropdown-toggle" href="#" role="button"
 						data-toggle="dropdown" aria-expanded="false"> Busqueda </a>
@@ -33,36 +35,56 @@
 								class="dropdown-item" href="#">Por Nacionalidad</a> <a
 								class="dropdown-item" href="#"> Por Fecha de Nacimiento</a>
 						</div></li>
-					<li class="nav-item"><a class="nav-link" th:href="@{/formularioHabitaciones}">Registrar Habitacion</a></li>
-					<li class="nav-item"><a class="nav-link" th:href="@{/listarHabitaciones}">Listado Habitaciones</a></li>
+					<li class="nav-item"><a class="nav-link"
+						th:href="@{/formularioHabitaciones}">Registrar Habitacion</a></li>
+					<li class="nav-item"><a class="nav-link"
+						th:href="@{/listarHabitaciones}">Listado Habitaciones</a></li>
 				</ul>
-				<form class="form-inline my-2 my-lg-0">
-					<input class="form-control mr-sm-2" type="search"
-						placeholder="Search" aria-label="Search">
-					<button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
-				</form>
+				<ul class="navbar-nav navbar-right">
+					<li sec:authorize="!isAuthenticated()"><a
+						class="btn btn-outline-primary" th:href="@{/login}">Iniciar
+							Sesion</a></li>
+					<li sec:authorize="isAuthenticated()" class="dropdown">
+						<a class="btn btn-outline-secondary dropdown-toggle" href="#"
+							role="button" data-toggle="dropdown" aria-expanded="false"><span sec:authentication="name"></span></a>
+
+						<div class="dropdown-menu">
+							<form id="logoutForm" th:action="@{/logout}" method="post">
+							<button class="dropdown-item" onclick="document.getElementById('logoutForm').submit();" type="submit">Cerrar Sesion</button>
+							<input type="hidden" th:name="${_csrf.parameterName}" th:value="${_csrf.token}">
+							</form>
+						</div>
+					</li>
+				</ul>
 			</div>
 		</nav>
 	</header>
 	<div class="container"></div>
-	<footer  th:fragment="footer" class="container"> 
-	<hr/>
-	<img th:src="@{/images/Hotel-logo.png}" width="100" height="100" alt="Hotel Logo"/>
-	<p>
-	Este proyecto fue desarrollado con Spring Boot por Cecilia Montaño.<br/> &copy; Company 2023, Inc. Todos los derecchos reservados. Terminos de uso y privacidad.<br/>
-	</p>
-	<script
-		src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
-		integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
-		crossorigin="anonymous"></script>
-	<script
-		src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
-		integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
-		crossorigin="anonymous"></script>
-	<script
-		src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
-		crossorigin="anonymous"></script>
+	<footer th:fragment="footer" class="container">
+		<hr />
+		<img th:src="@{/images/Hotel-logo.png}" width="100" height="100"
+			alt="Hotel Logo" />
+		<p sec:authorize="isAuthenticated()">
+			Usuario : <span sec:authentication="name"></span> | Tipo de Usuario :
+			<span sec:authentication="principal.authorities"></span>
+		</p>
+		<p>
+			Este proyecto fue desarrollado con Spring Boot por Cecilia Montaño.<br />
+			&copy; Company 2023, Inc. Todos los derecchos reservados. Terminos de
+			uso y privacidad.<br />
+		</p>
+		<script
+			src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"
+			integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+			crossorigin="anonymous"></script>
+		<script
+			src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"
+			integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN"
+			crossorigin="anonymous"></script>
+		<script
+			src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/js/bootstrap.bundle.min.js"
+			integrity="sha384-Fy6S3B9q64WdZWQUiU+q4/2Lc9npb8tCaSX9FK7E8HnRr0Jz8D6OP9dO5Vg3Q9ct"
+			crossorigin="anonymous"></script>
 	</footer>
 </body>
 </html>

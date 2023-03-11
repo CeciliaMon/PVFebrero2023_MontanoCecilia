@@ -41,4 +41,19 @@ public class HabitacionServiceImpl implements IHabitacionService{
 		habitacionRepository.deleteById(codigo);
 	}
 
+	@Override
+	public List<Habitacion> buscarHabitacionLibre() {
+		// TODO Auto-generated method stub
+		List<Habitacion> prueba = new ArrayList<>();
+		List<Habitacion> habitacionLibre = new ArrayList<>();
+		prueba = (List<Habitacion>) habitacionRepository.findAll();
+		
+		for(int i=0; i<prueba.size(); i++) {
+			if(prueba.get(i).getEstado().equals("Libre")) {
+				habitacionLibre.add(prueba.get(i));
+			}
+		}
+		return habitacionLibre;
+	}
+
 }

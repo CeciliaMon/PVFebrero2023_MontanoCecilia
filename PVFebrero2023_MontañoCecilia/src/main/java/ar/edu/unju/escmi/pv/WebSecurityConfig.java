@@ -12,21 +12,25 @@ import org.springframework.security.core.userdetails.User.UserBuilder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
+import ar.edu.unju.escmi.pv.auth.handler.WebSuccessHandler;
 import ar.edu.unju.escmi.pv.service.IMP.LoginUsuarioServiceImpl;
 @Configuration
 //@EnableWebSecurity
 public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	
+	@Autowired
+	private WebSuccessHandler successHandler;
 	
 	@Override
 	protected void configure(HttpSecurity http) throws Exception {
 		http
-		.authorizeRequests().antMatchers("/","/images/**", "/css/**", "/js/**", "/formulario/**", "/formularioHabitaciones/**", "/listarHabitaciones/**").permitAll()
-		.antMatchers("/formulario/**").hasAnyAuthority("Administrador")
-		.antMatchers("/listar/**").hasAnyAuthority("Administrador")
+		.authorizeRequests().antMatchers("/home/**","/images/**", "/css/**", "/js/**", "/formulario/**").permitAll()
+		.antMatchers("/listar/**", "formularioHabitaciones/**", "/listarHabitaciones/").hasAnyAuthority("Administrador")
+		.antMatchers("/eliminar/**", "/eliminarHabitaciones/**").hasAnyAuthority("Administrador")
 		.anyRequest().authenticated()
 		.and()
 		.formLogin()
+		.successHandler(successHandler)
 			.loginPage("/login")
 			.usernameParameter("dni")
 			.passwordParameter("password")

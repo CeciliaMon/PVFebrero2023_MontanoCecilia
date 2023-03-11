@@ -15,7 +15,6 @@
 				<th>DNI</th>
 				<th>Nombre</th>
 				<th>Apellido</th>
-				<th>Password</th>
 				<th>Fecha</th>
 				<th>Nacionalidad</th>
 				<th>Tipo de Usuario</th>
@@ -28,7 +27,6 @@
 				<td th:text="${usuario.dni}"></td>
 				<td th:text="${usuario.nombre}"></td>
 				<td th:text="${usuario.apellido}"></td>
-				<td th:text="${usuario.contrasena}"></td>
 				<td th:text="${usuario.fechaNacimiento}"></td>
 				<td th:text="${usuario.nacionalidad}"></td>
 				<td th:each="tipoU: ${usuario.tipoUsuario}" th:text="${tipoU}"></td>

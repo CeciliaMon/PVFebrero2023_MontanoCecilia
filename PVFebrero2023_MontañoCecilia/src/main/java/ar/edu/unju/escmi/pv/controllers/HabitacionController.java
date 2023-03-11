@@ -1,11 +1,19 @@
 package ar.edu.unju.escmi.pv.controllers;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 import javax.validation.Valid;
 
+import org.apache.juli.logging.Log;
+import org.apache.juli.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -19,6 +27,9 @@ import ar.edu.unju.escmi.pv.service.IHabitacionService;
 
 @Controller
 public class HabitacionController {
+	
+	protected final Log logger = LogFactory.getLog(this.getClass());
+
 	@Autowired
 	private IHabitacionService habitacionRepository;
 	
@@ -61,13 +72,29 @@ public class HabitacionController {
 	return "formularioHabitaciones";
 	}
 	
-	@GetMapping("/eliminar/{codigo}")
+	@GetMapping("/eliminarHabitacion/{codigo}")
 	public String remove(@PathVariable(value = "codigo") Long codigo) {
 		if(codigo > 0) {
 		habitacionRepository.remove(codigo);
 		}
 		
 	return "redirect:/listarHabitaciones";
+	}
+	
+	@GetMapping("/listarHabitacionesLibres")
+	public String listarLibres(Model model) {
+		
+		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+		
+		if(hasRole("Huesped")) {
+			logger.info("Hola ".concat(auth.getName()).concat(" tienes acceso!"));
+		}
+		else {
+			logger.info("Hola ".concat(auth.getName()).concat(" NO tienes acceso!"));
+		}
+		model.addAttribute("titulo", "Listado de Habitaciones disponibles:");
+		model.addAttribute("habitaciones", habitacionRepository.buscarHabitacionLibre());
+		return "listarHabitacionesLibres";
 	}
 	
 	@ModelAttribute("listaTipo")
@@ -91,6 +118,25 @@ public class HabitacionController {
 		estados.add("Ocupado");
 		estados.add("Libre");
 		return estados;
+	}
+	
+	private boolean hasRole(String role) {
+		SecurityContext context = SecurityContextHolder.getContext();
+		
+		if(context == null) {
+			return false;
+		}
+		
+		Authentication auth = context.getAuthentication();
+		
+		if(auth == null) {
+			return false;
+		}
+		
+		Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
+		
+		return authorities.contains(new SimpleGrantedAuthority(role)); //contiene el nombre del rol
+		
 	}
 	
 	

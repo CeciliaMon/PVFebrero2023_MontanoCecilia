@@ -9,4 +9,5 @@ public interface IHabitacionService {
 	public void guardar(Habitacion habitacion);
 	public Habitacion findByCodigo(Long codigo);
 	public void remove(Long codigo);
+	public List<Habitacion> buscarHabitacionLibre();
 }

@@ -28,7 +28,7 @@
 				<td th:each="estadoH: ${habitacion.estado}" th:text="${estadoH}"></td>
 				
 				<td><a class="btn btn-primary btn-xs" th:href="@{/formularioHabitaciones/} + ${habitacion.codigo}">Editar</a>
-				<td><a class="btn btn-danger btn-xs" th:href="@{/eliminar/} + ${habitacion.codigo}" onclick="return confirm('¿Estas seguro de eliminar esta habitacion?');">Eliminar</a>
+				<td><a class="btn btn-danger btn-xs" th:href="@{/eliminarHabitaciones/} + ${habitacion.codigo}" onclick="return confirm('¿Estas seguro de eliminar esta habitacion?');">Eliminar</a>
 			
 			</tr>
 
