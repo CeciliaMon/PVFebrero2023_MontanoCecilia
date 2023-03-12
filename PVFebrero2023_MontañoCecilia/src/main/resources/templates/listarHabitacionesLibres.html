@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org"
+	xmlns:sec="http://www.thymeleaf.org/extras/spring-security">
+<head th:replace="layout/layout :: head">
+</head>
+<body>
+	<header th:replace="layout/layout :: header"></header>
+
+	<div class="row py-4 mx-4">
+
+		<div class="col-lg-6 col-md-4 mb-4 "
+			th:each="habitacion: ${habitaciones}">
+			<div class="card  h-100 border-warning" style="background-color: #fff;">
+				<img class="card-img-top" th:src="@{/images/habitacion_premium.jpg}"
+					th:if="${habitacion.tipo=='Premium'}"> <img
+					class="card-img-top" th:src="@{/images/habitacion_regular.jpg}"
+					th:if="${habitacion.tipo=='Regular'}">
+				<div class="card-body">
+					<h4 class="card-title" th:text="${habitacion.tipo}"></h4>
+					<h5 class="card-subtitle mb-2 text-dark">
+						Codigo: <a th:text="${habitacion.codigo}"></a>
+					</h5>
+					<p class="card-text" th:text="${habitacion.caracteristicas}"></p>
+				</div>
+				
+				<div class="card-footer">
+				<ul class="list-group list-group-flush" >
+					<li class="list-group-item text-white" style="background-color: #d63384;">Tipo de cama: <a
+						th:text="${habitacion.camas}"></a></li>
+						</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+	<footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>

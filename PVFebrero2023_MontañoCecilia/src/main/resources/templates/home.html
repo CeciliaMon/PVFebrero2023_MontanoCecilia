@@ -5,9 +5,17 @@
 <body>
 	<header th:replace="layout/layout :: header"></header>
 	<div class="container py-4">
-	<h2>Hotel ----- Home</h2>
-	
+	   <h1 class="display-1 text-white text-center">Bienvenido al hotel</h1>
+	   <h2 class="text-white text-center">Que disfrute su estadia!</h2>
+	   <div class="card-body">
+	    <div>
+	       <img th:src="@{/images/img6.jpg}" width="400" height="500" th:alt="Imagen-hotel" class="card-img-top">
+	    </div>
 	</div>
+	   
+	</div>
+	 
+	 
 	<footer th:replace="layout/layout :: footer"></footer>
 </body>
 </html>

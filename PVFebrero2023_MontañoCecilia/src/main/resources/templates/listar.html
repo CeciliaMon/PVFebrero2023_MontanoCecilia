@@ -30,7 +30,7 @@
 				<td th:text="${usuario.fechaNacimiento}"></td>
 				<td th:text="${usuario.nacionalidad}"></td>
 				<td th:each="tipoU: ${usuario.tipoUsuario}" th:text="${tipoU}"></td>
-				<td><a class="btn btn-primary btn-xs" th:href="@{/formulario/} + ${usuario.dni}">Editar</a>
+				<td><a class="btn btn-warning btn-xs text-white" th:href="@{/formulario/} + ${usuario.dni}">Editar</a>
 				<td><a class="btn btn-danger btn-xs" th:href="@{/eliminar/} + ${usuario.dni}" onclick="return confirm('¿Estas seguro de eliminar este usuario?');">Eliminar</a>
 			
 			</tr>
@@ -40,7 +40,7 @@
 	</div>
 	</div>
 	<h4 class="card-tittle">
-	<a class="btn btn-success btn-xs" th:href="@{/formulario}">Crear Huesped</a>
+	<a class="btn btn-dark btn-xs" th:href="@{/formulario}">Crear Huesped</a>
 	</h4>
 	</div>
 		<footer th:replace="layout/layout :: footer"></footer>

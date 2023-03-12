@@ -27,7 +27,7 @@
 				<td th:each="camaH: ${habitacion.camas}" th:text="${camaH}"></td>
 				<td th:each="estadoH: ${habitacion.estado}" th:text="${estadoH}"></td>
 				
-				<td><a class="btn btn-primary btn-xs" th:href="@{/formularioHabitaciones/} + ${habitacion.codigo}">Editar</a>
+				<td><a class="btn btn-warning btn-xs text-white" th:href="@{/formularioHabitaciones/} + ${habitacion.codigo}">Editar</a>
 				<td><a class="btn btn-danger btn-xs" th:href="@{/eliminarHabitaciones/} + ${habitacion.codigo}" onclick="return confirm('¿Estas seguro de eliminar esta habitacion?');">Eliminar</a>
 			
 			</tr>
@@ -37,7 +37,7 @@
 	</div>
 	</div>
 	<h4 class="card-tittle">
-	<a class="btn btn-success btn-xs" th:href="@{/formularioHabitaciones}">Crear Habitacion</a>
+	<a class="btn btn-dark btn-xs" th:href="@{/formularioHabitaciones}">Crear Habitacion</a>
 	</h4>
 	</div>
 		<footer th:replace="layout/layout :: footer"></footer>

@@ -2,14 +2,14 @@
 <html  xmlns:th="http://www.thymeleaf.org">
 <head th:replace="layout/layout :: head">
 <meta charset="UTF-8">
-<title>Insert title here</title>
 </head>
 <body>
 <header th:replace="layout/layout :: header"></header>
-
-<h1>No tiene acceso a esta pagina</h1>
-<a th:href="@{/listar}" class="btn btn-outline-dark" role="button">
+<div class="container py-4">
+<h1 class="text-center text-white">No tiene acceso a esta pagina</h1>
+<a th:href="@{/home}" class="btn btn-dark" role="button">
 					Ir al inicio </a>
+					</div>
 					
 	<footer th:replace="layout/layout :: footer"></footer>
 </body>

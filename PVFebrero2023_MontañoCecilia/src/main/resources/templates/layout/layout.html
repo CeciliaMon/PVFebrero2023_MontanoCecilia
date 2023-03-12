@@ -4,6 +4,7 @@
 <head th:fragment="head">
 <meta charset="UTF-8" />
 <title th:text="'Pagina de Hotel - ' + ${titulo}"></title>
+<link rel="stylesheet" th:href="@{/css/style.css}" type="text/css">
 <link rel="stylesheet"
 	href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.2/dist/css/bootstrap.min.css"
 	integrity="sha384-xOolHFLEh07PJGoPkLv1IbcEPTNtaed2xpHsD9ESMhqIYd0nLMwNLD69Npy4HI+N"
@@ -11,7 +12,7 @@
 </head>
 <body>
 	<header th:fragment="header">
-		<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+		<nav class="navbar navbar-expand-lg navbar-light bg-light">
 			<a class="navbar-brand" th:href="@{/home}">Hotel</a>
 			<button class="navbar-toggler" type="button" data-toggle="collapse"
 				data-target="#navbarSupportedContent"
@@ -37,15 +38,22 @@
 						</div></li>
 					<li class="nav-item"><a class="nav-link"
 						th:href="@{/formularioHabitaciones}">Registrar Habitacion</a></li>
-					<li class="nav-item"><a class="nav-link"
-						th:href="@{/listarHabitaciones}">Listado Habitaciones</a></li>
+					<!--  <li class="nav-item"><a class="nav-link"
+						th:href="@{/listarHabitaciones}">Listado Habitaciones</a></li> -->
+				<li class="nav-item dropdown"><a
+						class="nav-link dropdown-toggle" href="#" role="button"
+						data-toggle="dropdown" aria-expanded="false">Listado Habitaciones </a>
+						<div class="dropdown-menu">
+							<a class="dropdown-item" th:href="@{/listarHabitaciones}">Todas las habitaciones</a> <a
+								class="dropdown-item" th:href="@{/listarHabitacionesLibres}">Todas las habitaciones libres</a>
+						</div></li>
 				</ul>
 				<ul class="navbar-nav navbar-right">
 					<li sec:authorize="!isAuthenticated()"><a
-						class="btn btn-outline-primary" th:href="@{/login}">Iniciar
+						class="btn btn-outline-secondary" th:href="@{/login}">Iniciar
 							Sesion</a></li>
 					<li sec:authorize="isAuthenticated()" class="dropdown">
-						<a class="btn btn-outline-secondary dropdown-toggle" href="#"
+						<a class="btn btn-outline-danger dropdown-toggle" href="#"
 							role="button" data-toggle="dropdown" aria-expanded="false"><span sec:authentication="name"></span></a>
 
 						<div class="dropdown-menu">
@@ -64,11 +72,11 @@
 		<hr />
 		<img th:src="@{/images/Hotel-logo.png}" width="100" height="100"
 			alt="Hotel Logo" />
-		<p sec:authorize="isAuthenticated()">
+		<p sec:authorize="isAuthenticated()" class="text-dark">
 			Usuario : <span sec:authentication="name"></span> | Tipo de Usuario :
 			<span sec:authentication="principal.authorities"></span>
 		</p>
-		<p>
+		<p class="text-dark">
 			Este proyecto fue desarrollado con Spring Boot por Cecilia Montaño.<br />
 			&copy; Company 2023, Inc. Todos los derecchos reservados. Terminos de
 			uso y privacidad.<br />
