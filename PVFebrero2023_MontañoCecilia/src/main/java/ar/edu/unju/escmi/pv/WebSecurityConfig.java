@@ -25,7 +25,7 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 	protected void configure(HttpSecurity http) throws Exception {
 		http
 		.authorizeRequests().antMatchers("/home/**","/images/**", "/css/**", "/js/**", "/formulario/**").permitAll()
-		.antMatchers("/listar/**", "/formularioHabitaciones/**", "/listarHabitaciones/**").hasAnyAuthority("Administrador")
+		.antMatchers("/listar/**", "/formularioHabitaciones/**", "/listarHabitaciones/**","/listarHuespedes/**", "/listarBuscarDni/**", "/listarBuscarNacionalidad/**", "/listarBuscarFecha/**").hasAnyAuthority("Administrador")
 		.antMatchers("/eliminar/**", "/eliminarHabitaciones/**").hasAnyAuthority("Administrador")
 		.antMatchers("/listarHabitacionesLibres/**").hasAnyAuthority("Huesped")
 		.anyRequest().authenticated()
@@ -41,7 +41,6 @@ public class WebSecurityConfig extends WebSecurityConfigurerAdapter{
 		.permitAll()
 		.and()
 		.exceptionHandling().accessDeniedPage("/error_350");
-		//.logoutSuccessUrl("/login?logout");
 	}
 	
 	BCryptPasswordEncoder bCryptPasswordEncoder;

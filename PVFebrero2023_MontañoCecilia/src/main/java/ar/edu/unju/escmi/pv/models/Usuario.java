@@ -1,6 +1,7 @@
 package ar.edu.unju.escmi.pv.models;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 
 import javax.persistence.Entity;
@@ -32,10 +33,9 @@ public class Usuario implements Serializable{
 	private String apellido;
 
 	@NotNull
-	@Temporal(TemporalType.DATE)
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	@Past
-	private Date fechaNacimiento;
+	private LocalDate fechaNacimiento;
 
 	@NotEmpty
 	private String contrasena;
@@ -71,11 +71,13 @@ public class Usuario implements Serializable{
 		this.apellido = apellido;
 	}
 
-	public Date getFechaNacimiento() {
+
+
+	public LocalDate getFechaNacimiento() {
 		return fechaNacimiento;
 	}
 
-	public void setFechaNacimiento(Date fechaNacimiento) {
+	public void setFechaNacimiento(LocalDate fechaNacimiento) {
 		this.fechaNacimiento = fechaNacimiento;
 	}
 

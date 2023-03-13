@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="layout/layout :: head">
+</head>
+<body>
+	<header th:replace="layout/layout :: header"></header>
+<div class="container py-4">
+<div class="card bg-light">
+<div class="card-header" th:text="${titulo}"></div>
+<div class="card-body">
+
+	<form class="form-inline" th:action="@{/listarBuscarFecha}">
+	<div class="form-group mb-2">
+	<label>Buscar por fecha</label>
+	<div class="form-group mx-sm-3 mb-2">
+	<input type="date" name="fecha" class="form-control" id="fecha" th:value="${fecha}">
+	</div>
+	<input type="submit" class="btn btn-secondary mb-2" value="Buscar">
+	</div>
+	</form>
+	<table class="table table-striped">
+		<thead class="thead-inverse">
+			<tr>
+				<th>DNI</th>
+				<th>Nombre</th>
+				<th>Apellido</th>
+				<th>Fecha</th>
+				<th>Nacionalidad</th>
+				<th>Tipo de Usuario</th>
+				<th>Editar</th>
+				<th>Eliminar</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr th:each="usuario: ${usuarios}">
+				<td th:text="${usuario.dni}"></td>
+				<td th:text="${usuario.nombre}"></td>
+				<td th:text="${usuario.apellido}"></td>
+				<td th:text="${usuario.fechaNacimiento}"></td>
+				<td th:text="${usuario.nacionalidad}"></td>
+				<td th:each="tipoU: ${usuario.tipoUsuario}" th:text="${tipoU}"></td>
+				<td><a class="btn btn-warning btn-xs text-white" th:href="@{/formulario/} + ${usuario.dni}">Editar</a>
+				<td><a class="btn btn-danger btn-xs" th:href="@{/eliminar/} + ${usuario.dni}" onclick="return confirm('¿Estas seguro de eliminar este usuario?');">Eliminar</a>
+			
+			</tr>
+
+		</tbody>
+	</table>
+	</div>
+	</div>
+	<h4 class="card-tittle">
+	<a class="btn btn-dark btn-xs" th:href="@{/formulario}">Crear Huesped</a>
+
+	</h4>
+	</div>
+		<footer th:replace="layout/layout :: footer"></footer>
+</body>
+</html>

@@ -23,6 +23,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 
 import ar.edu.unju.escmi.pv.models.Habitacion;
+import ar.edu.unju.escmi.pv.models.Usuario;
 import ar.edu.unju.escmi.pv.service.IHabitacionService;
 
 @Controller
@@ -58,7 +59,7 @@ public class HabitacionController {
 		return "redirect:/listarHabitaciones";
 	}
 	
-	@GetMapping("/formularioHabitaciones/{dni}")
+	@GetMapping("/formularioHabitaciones/{codigo}")
 	public String editar(@PathVariable(value = "codigo") Long codigo, Model model) {
 		Habitacion habitacion = new Habitacion();
 		if(codigo > 0) {
@@ -69,10 +70,19 @@ public class HabitacionController {
 		}
 		model.addAttribute("habitacion", habitacion);
 		model.addAttribute("titulo", "FORMULARIO EDITAR HABITACIONES");
-	return "formularioHabitaciones";
+	return "formularioHabitacionesModificar";
 	}
 	
-	@GetMapping("/eliminarHabitacion/{codigo}")
+	@PostMapping("/formularioHabitacionesModificar")
+	public String modificar(@Valid Habitacion habitacion, BindingResult result, Model model) {
+		if(result.hasErrors()) {
+			model.addAttribute("titulo", "FORMULARIO");
+			return "formularioHabitacionesModificar";
+		}
+		habitacionRepository.guardar(habitacion);
+		return "redirect:/listarHabitaciones";
+	}
+	@GetMapping("/eliminarHabitaciones/{codigo}")
 	public String remove(@PathVariable(value = "codigo") Long codigo) {
 		if(codigo > 0) {
 		habitacionRepository.remove(codigo);
@@ -84,14 +94,6 @@ public class HabitacionController {
 	@GetMapping("/listarHabitacionesLibres")
 	public String listarLibres(Model model) {
 		
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		
-		if(hasRole("Huesped")) {
-			logger.info("Hola ".concat(auth.getName()).concat(" tienes acceso!"));
-		}
-		else {
-			logger.info("Hola ".concat(auth.getName()).concat(" NO tienes acceso!"));
-		}
 		model.addAttribute("titulo", "Listado de Habitaciones disponibles:");
 		model.addAttribute("habitaciones", habitacionRepository.buscarHabitacionLibre());
 		return "listarHabitacionesLibres";
@@ -119,26 +121,6 @@ public class HabitacionController {
 		estados.add("Libre");
 		return estados;
 	}
-	
-	private boolean hasRole(String role) {
-		SecurityContext context = SecurityContextHolder.getContext();
-		
-		if(context == null) {
-			return false;
-		}
-		
-		Authentication auth = context.getAuthentication();
-		
-		if(auth == null) {
-			return false;
-		}
-		
-		Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
-		
-		return authorities.contains(new SimpleGrantedAuthority(role)); //contiene el nombre del rol
-		
-	}
-	
 	
 }
 

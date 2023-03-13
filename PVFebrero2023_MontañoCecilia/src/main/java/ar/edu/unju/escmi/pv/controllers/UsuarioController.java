@@ -1,5 +1,6 @@
 package ar.edu.unju.escmi.pv.controllers;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
@@ -9,6 +10,8 @@ import javax.validation.Valid;
 import org.apache.juli.logging.Log;
 import org.apache.juli.logging.LogFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -33,24 +36,21 @@ public class UsuarioController {
 	@Autowired
 	private IUsuarioService usuarioRepository;
 	
-	@GetMapping("/home")
+	@GetMapping({"/home", "/"})
 	public String home(Model model) {
 		model.addAttribute("titulo", "Pagina Principal");
 		return "home";
 	}
 	
+	@GetMapping("/error_350")
+		public String error(Model model) {
+			model.addAttribute("titulo", "Accesso Denegado");
+			return "error_350"; 
+		}
+	
 	@GetMapping("/listar")
 	public String listar(Model model) {
 		
-		Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-		
-		if(hasRole("Administrador")) {
-			logger.info("Hola usuario : ".concat(auth.getName()).concat(" tienes acceso!"));
-		}
-		else {
-			logger.info("Hola usuario : ".concat(auth.getName()).concat(" no tienes acceso!"));
-
-		}
 		model.addAttribute("titulo", "Listado de Usuarios en el Hotel");
 		model.addAttribute("usuarios", usuarioRepository.listar());
 	return "listar";
@@ -78,14 +78,23 @@ public class UsuarioController {
 	public String editar(@PathVariable(value = "dni") Long dni, Model model) {
 		Usuario usuario = new Usuario();
 		if(dni > 0) {
-		usuario = usuarioRepository.findByDni(dni);
+		usuario = usuarioRepository.buscarDni(dni);
 		}
 		else {
 			return "redirect:/listar";
 		}
 		model.addAttribute("usuario", usuario);
 		model.addAttribute("titulo", "FORMULARIO EDITAR");
-	return "formulario";
+	return "formularioModificar";
+	}
+	@PostMapping("/formularioModificar")
+	public String modificar(@Valid Usuario usuario, BindingResult result, Model model) {
+		if(result.hasErrors()) {
+			model.addAttribute("titulo", "FORMULARIO");
+			return "formularioModificar";
+		}
+		usuarioRepository.guardar(usuario);
+		return "redirect:/listar";
 	}
 	
 	@GetMapping("/eliminar/{dni}")
@@ -97,30 +106,64 @@ public class UsuarioController {
 	return "redirect:/listar";
 	}
 	
+	@GetMapping("/listarHuespedes")
+	public String listarHuesped(Model model) {
+		
+		model.addAttribute("titulo", "Listado de Huespedes en el Hotel");
+		model.addAttribute("usuarios", usuarioRepository.listarHuesped());
+		return "listarHuespedes";
+	}
+	
+	@GetMapping("/listarBuscarNacionalidad")
+	public String buscarPorNacionalidad(@Param("nacionalidad") String nacionalidad, Model model) {
+		if(nacionalidad==null) {
+			nacionalidad="";
+		}
+		List<Usuario> usuario =  new ArrayList<>();
+		if(nacionalidad != "") {
+		usuario = usuarioRepository.findByNacionalidad(nacionalidad);
+		}
+		if(nacionalidad == "") {
+			usuario = usuarioRepository.listar();
+		}
+		model.addAttribute("usuarios", usuario);
+		model.addAttribute("titulo", "Busqueda por nacionalidad");
+		return "listarBuscarNacionalidad";
+	}
+	@GetMapping("/listarBuscarDni")
+	public String buscarPorDni(@Param("dni") Long dni, Model model) {
+		
+		List<Usuario> usuario =  new ArrayList<>();
+		if(dni != null) {
+		usuario = usuarioRepository.findByDni(dni);
+		}
+		if(dni == null) {
+			usuario = usuarioRepository.listar();
+		}
+		model.addAttribute("usuarios", usuario);
+		model.addAttribute("titulo", "Busqueda por dni");
+		return "listarBuscarDni";
+	}
+	@GetMapping("/listarBuscarFecha")
+	public String buscarPorFecha(@Param("fecha") @DateTimeFormat(pattern="yyyy-MM-dd") LocalDate fecha, Model model) {
+		
+		List<Usuario> usuario =  new ArrayList<>();
+		if(fecha != null) {
+		usuario = usuarioRepository.findByfechaNacimiento(fecha);
+		}
+		if(fecha == null) {
+			usuario = usuarioRepository.listar();
+		}
+		model.addAttribute("usuarios", usuario);
+		model.addAttribute("titulo", "Busqueda por fecha");
+		return "listarBuscarFecha";
+	}
+	
 	@ModelAttribute("listaTipoUsuario")
 	public List<String> listaTipoUsuario(){
 		List<String> tipoUsuarios = new ArrayList<>();
 		tipoUsuarios.add("Administrador");
 		tipoUsuarios.add("Huesped");
 		return tipoUsuarios;
-	}
-	
-	private boolean hasRole(String role) {
-		SecurityContext context = SecurityContextHolder.getContext();
-		
-		if(context == null) {
-			return false;
-		}
-		
-		Authentication auth = context.getAuthentication();
-		
-		if(auth == null) {
-			return false;
-		}
-		
-		Collection<? extends GrantedAuthority> authorities = auth.getAuthorities();
-		
-		return authorities.contains(new SimpleGrantedAuthority(role)); //contiene el nombre del rol
-		
 	}
 }

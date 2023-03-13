@@ -6,12 +6,12 @@
 <body>
 	<header th:replace="layout/layout :: header"></header>
 
-	<div class="row py-4 mx-4">
+	<div class="row py-4 mx-5">
 
-		<div class="col-lg-6 col-md-4 mb-4 "
+		<div class="col-lg-6 col-md-4 mb-6 py-2"
 			th:each="habitacion: ${habitaciones}">
 			<div class="card  h-100 border-warning" style="background-color: #fff;">
-				<img class="card-img-top" th:src="@{/images/habitacion_premium.jpg}"
+				<img class="card-img-top" th:src="@{/images/habitacion_premium.jpg}" height="445"
 					th:if="${habitacion.tipo=='Premium'}"> <img
 					class="card-img-top" th:src="@{/images/habitacion_regular.jpg}"
 					th:if="${habitacion.tipo=='Regular'}">
