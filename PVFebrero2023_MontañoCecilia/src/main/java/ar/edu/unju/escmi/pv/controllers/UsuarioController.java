@@ -31,8 +31,6 @@ import ar.edu.unju.escmi.pv.service.IUsuarioService;
 @Controller
 public class UsuarioController {
 	
-	protected final Log logger = LogFactory.getLog(this.getClass());
-	
 	@Autowired
 	private IUsuarioService usuarioRepository;
 	
